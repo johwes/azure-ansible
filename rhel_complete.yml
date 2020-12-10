@@ -51,3 +51,7 @@
         publisher: "redhat"
         sku: "rhel-lvm83"
         version: "latest"
+      plan:
+        name: "rhel-lvm83"
+        publisher: "redhat"
+        product: "rhel-byos"

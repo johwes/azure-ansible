@@ -13,23 +13,24 @@
   - name: provision new Azure virtual host
     azure_rm_virtualmachine:
       os_type: Windows
-      vm_size: Standard_DS2
+      vm_size: "{{ vm_size }}"
       image:
         offer: WindowsServer
         publisher: MicrosoftWindowsServer
         sku: 2016-Datacenter
         version: latest
-      name: TestVM01
+      name: "{{ vm_name }}"
+      subnet_name: "{{ subnet_name }}"
       admin_username: azureuser
       admin_password: Password00!
-      resource_group: Testing
+      resource_group: "{{ resource_group }}"
       state: present
 
   - name: create Azure vm extension to enable HTTPS WinRM listener
     azure_rm_virtualmachine_extension:
       name: winrm-extension
-      resource_group: Testing
-      virtual_machine_name: TestVM01
+      resource_group: "{{ resource_group }}"
+      virtual_machine_name: "{{ vm_name }}"
       publisher: Microsoft.Compute
       virtual_machine_extension_type: CustomScriptExtension
       type_handler_version: 1.9

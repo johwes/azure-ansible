@@ -1,6 +1,5 @@
 - name: Register, subscribe and install insights.
   hosts: all
-  remote_user: root
   tasks:
   - name: Register with activationkey and consume subscriptions
     redhat_subscription:

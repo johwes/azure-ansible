@@ -9,4 +9,4 @@
 
   - name: Install and register insights client by including the role RedHatInsights.insights-client
     include_role:
-      name: RedHatInsights.insights-client
+      name: redhatinsights.insights-client

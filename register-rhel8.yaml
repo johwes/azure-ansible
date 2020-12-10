@@ -1,0 +1,13 @@
+- name: Register, subscribe and install insights.
+  hosts: all
+  remote_user: root
+  tasks:
+  - name: Register with activationkey and consume subscriptions
+    redhat_subscription:
+      state: present
+      activationkey: "{{ activationkey }}"
+      org_id: "{{ org_id }}"
+
+  - name: Install and register insights client by including the role RedHatInsights.insights-client
+    include_role:
+      name: RedHatInsights.insights-client

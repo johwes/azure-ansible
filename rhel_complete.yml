@@ -46,6 +46,9 @@
       admin_password: 'SecUr3P@s5w0rdSCanBeHard'
       ssh_password_enabled: true
       network_interfaces: myNIC
+      tags:
+        env: "dev"
+        role: "server"
       image:
         offer: "rhel-byos"
         publisher: "redhat"

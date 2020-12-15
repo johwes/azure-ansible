@@ -1,0 +1,11 @@
+- name: Subscribe to RHSM and enable repos
+  hosts: all
+
+  tasks:
+  - name: update the system
+    yum:
+      name: "*"
+      state: latest
+
+  - name: Reboot the machine with all defaults
+    reboot:

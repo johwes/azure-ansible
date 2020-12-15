@@ -7,4 +7,4 @@
         name: "{{ name }}"
         comment: Managed User
         uid: "{{ uid }}"
-        password: "$6$c3P0J2tIxNwdCGV2$3gdcRBd0vA44Glquq9ljcWZFNmBY74EwbKpXoytA8.NqDijAf8I9QLKTjlFDTyPmXIC1s9tXGdlLE4VoplbL20"
+        password: "$6$c3P0J2tIxNwdCGV2$3gdcRBd0vA44Glquq9ljcWZFNmBY74EwbKpXoytA8.NqDijAf8I9QLKTjlFDTyPmXIC1s9tXGdlLE4VoplbL20" # Generated with mkpasswd -m sha-512 - Password i redhat

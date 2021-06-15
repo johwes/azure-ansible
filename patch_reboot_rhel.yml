@@ -1,4 +1,4 @@
-- name: Subscribe to RHSM and enable repos
+- name: Patch and reboot machine
   hosts: all
 
   tasks:

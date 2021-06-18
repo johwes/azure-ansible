@@ -1,9 +1,9 @@
-- name: Create Azure VM
+- name: Get facts for all virtual machines of a resource group
   hosts: localhost
   connection: local
   tasks:
 
   - name: Get facts for all virtual machines of a resource group
       azure_rm_virtualmachine_info:
-        resource_group: myResourceGroup
+        resource_group: Testing
 

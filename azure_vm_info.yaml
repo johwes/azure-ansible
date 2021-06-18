@@ -6,4 +6,8 @@
   - name: Get facts for all virtual machines of a resource group
     azure_rm_virtualmachine_info:
       resource_group: "{{ resource_group }}"
+    register: virtualmachine_facts
 
+  - name: Print virtualmachine_facts
+    ansible.builtin.debug:
+      var: virtualmachine_facts

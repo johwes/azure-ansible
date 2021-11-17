@@ -1,82 +1,50 @@
 #!/usr/bin/env python
 
-'''
-Dynamic inventory of libvirt script for Ansible, in Python.
-'''
-
 import sys
-import argparse
 import libvirt
 import json
+import socket
 
-class LibvirtInventory(object):
+# We want to gather the hostname for Ansible.
+hostname = socket.gethostbyaddr(socket.gethostname())[0]
+# We want this to run on the local system only.
+host_domain = 'qemu:///system'
 
-    def __init__(self):
-        self.inventory = {'_meta': {'hostvars': {}}}
-        self.read_cli_args()
-        self.conn = libvirt.open('qemu:///system')
-        if self.conn == None:
-            print 'Failed to connect to hypervisor'
-            sys.exit(1)
+# Initialize the dictionary.  May be a horrible way to deal with it, but I am too new to it to make it better.
+inventory = {}
+inventory['_meta'] = {}
+inventory['_meta']['hostvars'] = {}
+inventory['all'] = {}
+inventory['all']['vars'] = {}
+inventory['all']['vars']['ansible_user'] = "root"
+inventory['all']['children'] = ['active', 'inactive', 'ungrouped']
+inventory['active'] = {}
+inventory['active']['vars'] = {}
+inventory['active']['vars']['ansible_user'] = "root"
+inventory['inactive'] = {}
+inventory['inactive']['vars'] = {}
+inventory['inactive']['vars']['ansible_user'] = "root"
 
-        if self.args.list:
-            self.get_inv()
-        elif self.args.host:
-            #TODO: support --host as an optional thing
-            #self.dom_info(self.args.host)
-            pass
+virthost = libvirt.open(host_domain)
+if virthost == None:
+    sys.stderr.write('Failed to open connection to ' + host_domain, file=sys.stderr)
+    exit(1)
 
-        print json.dumps(self.inventory);
+# It took me a bit to figure out that there is no constant for all domains, just 0.  Hint was in libvirt-domain.h
+alldomains = virthost.listAllDomains(0)
+activedomains = virthost.listAllDomains(libvirt.VIR_CONNECT_LIST_DOMAINS_ACTIVE)
+inactivedomains = virthost.listAllDomains(libvirt.VIR_CONNECT_LIST_DOMAINS_INACTIVE)
 
-    def get_inv(self):
-        domains = self.conn.listDomainsID()
-        if len(domains) == 0:
-            return
-        else:
-            for domain in domains:
-                self.dom_info(domain)
+inventory['active']['hosts'] = [domain.name() for domain in activedomains]
+inventory['inactive']['hosts'] = [domain.name() for domain in inactivedomains]
 
+if len(sys.argv) == 2 and sys.argv[1] == '--list':
+    print(json.dumps(inventory, indent=4, sort_keys=True))
+elif len(sys.argv) == 3 and sys.argv[1] == '--host':
+    print(json.dumps({'ansible_connection': 'libvirt_lxc'}))
+else:
+    sys.stderr.write("Need an argument, either --list or --host <host>\n")
 
-    def dom_info(self, dom):
-        if isinstance(dom, int):
-            domain = self.conn.lookupByID(dom)
-        else:
-            domain = self.conn.lookupByName(dom)
-        try:
-            dom_inv = json.loads(domain.metadata(0, None))
-        except (ValueError,libvirt.libvirtError):
-            dom_inv = {}
-        finally:
-            try:
-                dom_host_vars = {}
-                dom_ifaces = domain.interfaceAddresses(libvirt.VIR_DOMAIN_INTERFACE_ADDRESSES_SRC_AGENT)
-                if dom_ifaces != None:
-                    for iface in dom_ifaces:
-                        if iface == 'lo':
-                            continue
-                        for addr in dom_ifaces[iface]['addrs']:
-                            if addr['type'] == 0:
-                                dom_host_vars['ansible_host'] =  addr['addr']
-                if 'ansible_host' not in dom_host_vars:
-                    return
-                if 'groups' in dom_inv:
-                    for group in dom_inv['groups']:
-                        if group in self.inventory:
-                            self.inventory[group]['hosts'].append(domain.name())
-                        else:
-                            self.inventory.update({group: {'hosts': [domain.name()]}})
-                dom_host_vars['ansible_user'] = 'root'
-                if 'hostvars' in dom_inv:
-                    dom_host_vars.update(dom_inv['hostvars'])
-                self.inventory['_meta']['hostvars'].update({domain.name(): dom_host_vars })
-            except (TypeError,libvirt.libvirtError):
-                pass
-
-    def read_cli_args(self):
-        parser = argparse.ArgumentParser()
-        parser.add_argument('--list', action = 'store_true')
-        parser.add_argument('--host', action = 'store')
-        self.args = parser.parse_args()
-
-LibvirtInventory()
+virthost.close()
+exit()
 

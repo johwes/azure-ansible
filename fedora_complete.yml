@@ -46,6 +46,7 @@
       admin_password: Password00!
       ssh_password_enabled: true
       network_interfaces: myNIC
+      managed_disk_type: Standard_LRS
       image:
         offer: fedora-linux-38
         publisher: solvedevops1643693563360

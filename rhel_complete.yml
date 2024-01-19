@@ -53,6 +53,7 @@
       admin_username: azureuser
       admin_password: 'SecUr3P@s5w0rdSCanBeHard'
       ssh_password_enabled: true
+      managed_disk_type: Standard_LRS
       network_interfaces: myNIC
       tags:
         env: "dev"

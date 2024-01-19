@@ -5,26 +5,26 @@
 
   - name: Create virtual network
     azure.azcollection.azure_rm_virtualnetwork:
-      resource_group: Testing
+      resource_group: "{{ resource_group }}"
       name: myVnet
       address_prefixes: "10.0.0.0/16"
 
   - name: Add subnet
     azure.azcollection.azure_rm_subnet:
-      resource_group: Testing
+      resource_group: "{{ resource_group }}"
       name: mySubnet
       address_prefix: "10.0.1.0/24"
       virtual_network: myVnet
 
   - name: Create public IP address
     azure.azcollection.azure_rm_publicipaddress:
-      resource_group: Testing
+      resource_group: "{{ resource_group }}"
       allocation_method: Static
       name: myPublicIP
 
   - name: Create Network Security Group that allows SSH
     azure.azcollection.azure_rm_securitygroup:
-      resource_group: Testing
+      resource_group: "{{ resource_group }}"
       name: myNetworkSecurityGroup
       rules:
         - name: SSH
@@ -36,7 +36,7 @@
 
   - name: Create virtual network inteface card
     azure.azcollection.azure_rm_networkinterface:
-      resource_group: Testing
+      resource_group: "{{ resource_group }}"
       name: myNIC
       virtual_network: myVnet
       subnet: mySubnet
@@ -45,7 +45,7 @@
 
   - name: Create VM
     azure.azcollection.azure_rm_virtualmachine:
-      resource_group: Testing
+      resource_group: "{{ resource_group }}"
       name: myRHELVM
       vm_size: Standard_DS1_v2
       admin_username: azureuser
@@ -58,9 +58,9 @@
       image:
         offer: "rhel-byos"
         publisher: "redhat"
-        sku: "rhel-lvm83"
+        sku: "rhel-lvm93"
         version: "latest"
       plan:
-        name: "rhel-lvm83"
+        name: "rhel-lvm93"
         publisher: "redhat"
         product: "rhel-byos"

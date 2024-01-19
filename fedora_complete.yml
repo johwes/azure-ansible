@@ -41,6 +41,8 @@
     azure.azcollection.azure_rm_virtualmachine:
       resource_group: "{{ resource_group }}"
       name: myFedora38
+      state: present
+      started: true
       vm_size: Standard_DS1_v2
       admin_username: azureuser
       admin_password: Password00!

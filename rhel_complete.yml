@@ -48,6 +48,8 @@
       resource_group: "{{ resource_group }}"
       name: myRHELVM
       vm_size: Standard_DS1_v2
+      state: present
+      started: true
       admin_username: azureuser
       admin_password: 'SecUr3P@s5w0rdSCanBeHard'
       ssh_password_enabled: true
@@ -56,11 +58,7 @@
         env: "dev"
         role: "server"
       image:
-        offer: "rhel-byos"
-        publisher: "redhat"
-        sku: "rhel-lvm93"
+        offer: "RHEL"
+        publisher: "RedHat"
+        sku: "93-gen2"
         version: "latest"
-      plan:
-        name: "rhel-lvm93"
-        publisher: "redhat"
-        product: "rhel-byos"

@@ -52,3 +52,7 @@
         publisher: solvedevops1643693563360
         sku: 'plan001'
         version: latest
+      plan:
+        name: "plan001"
+        publisher: "solvedevops1643693563360"
+        product: "fedora-linux-38"

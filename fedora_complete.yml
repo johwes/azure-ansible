@@ -49,6 +49,9 @@
       ssh_password_enabled: true
       network_interfaces: myNIC
       managed_disk_type: Standard_LRS
+      tags:
+        env: "dev"
+        role: "server"
       image:
         offer: fedora-linux-38
         publisher: solvedevops1643693563360

@@ -1,0 +1,12 @@
+- name: Install required software
+  hosts: all
+
+  tasks:
+    - name: Install python3-speedtest-cli
+      ansible.builtin.package:
+        name: python3-speedtest-cli
+        state: present
+
+
+    - name: Reboot the machine with all defaults
+      ansible.builtin.reboot:

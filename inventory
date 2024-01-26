@@ -1,0 +1,2 @@
+[all]
+fedora38 ansible_host=52.142.221.145 ansible_user=azureuser ansible_password=Password00!
